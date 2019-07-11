@@ -3,7 +3,6 @@
            https://api.github.com/users/<your name>
 */
 
-
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -47,7 +46,6 @@
 
 */
 
-
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
@@ -56,53 +54,51 @@
   bigknell
 */
 
-// send GET request using axios 
+// send GET request using axios
 
-axios.get('https://api.github.com/users/reesekunz')
+axios
+  .get("https://api.github.com/users/reesekunz")
 
-.then (data => { 
-// Handles Success: here's where we get the results from server
-//console.log(data)
-const userData = data.data 
-// select the main dom node to attach our dynamic content
-const cards = document.querySelector('.cards')
-// creating a set of components
-const cardInfo= createUserCard(userData)
-//console.log(cardInfo);
-// adding them to the DOM
-cards.appendChild(cardInfo);  })
+  .then(data => {
+    // Handles Success: here's where we get the results from server
+    console.log("Handles success", data);
+    const userData = data.data;
+    // select the main dom node to attach our dynamic content
+    const cards = document.querySelector(".cards");
+    // creating a set of components
+    const cardInfo = createUserCard(userData);
+    // adding them to the DOM
+    cards.appendChild(cardInfo);
+  })
 
-.catch(error => {
-  // Handles failure:
-  console.log('The gitHub API is currently down, try again later', error)
-})
+  .catch(error => {
+    // Handles failure:
+    console.log("The gitHub API is currently down, try again later", error);
+  });
 
-
-
-const cards = document.querySelector('.cards')
+const cards = document.querySelector(".cards");
 // creates and returns DOM node
-function createUserCard (user) {
+function createUserCard(user) {
+  // create the elements based off HTML
+  const card = document.createElement("div");
+  const img = document.createElement("img");
+  const cardInfo = document.createElement("div");
+  const name = document.createElement("h3");
+  const userName = document.createElement("p");
+  const location = document.createElement("p");
+  const profile = document.createElement("p");
+  const link = document.createElement("a");
+  const followers = document.createElement("p");
+  const following = document.createElement("p");
+  const bio = document.createElement("p");
 
-// create the elements based off HTML 
-  const card = document.createElement('div');
-  const img = document.createElement('img');
-  const cardInfo = document.createElement('div');
-  const name = document.createElement('h3');
-  const userName = document.createElement('p');
-  const location = document.createElement('p');
-  const profile = document.createElement('p');
-  const link = document.createElement('a');
-  const followers = document.createElement('p');
-  const following = document.createElement('p');
-  const bio = document.createElement('p');
+  // set the styles based off classes
+  card.classList.add("card");
+  cardInfo.classList.add("card-info");
+  name.classList.add("name");
+  userName.classList.add("user-name");
 
-// set the styles based off classes 
-  card.classList.add('card');
-  cardInfo.classList.add('card-info');
-  name.classList.add('name');
-  userName.classList.add('user-name');
-
-  // set the content based off gitHub info 
+  // set the content based off gitHub info
   img.src = user.avatar_url;
   location.textContent = user.location;
   name.textContent = user.name;
@@ -113,7 +109,7 @@ function createUserCard (user) {
   following.textContent = `Following: ${user.following}`;
   bio.textContent = user.bio;
 
-  // put together based off HTML parent/child 
+  // put together based off HTML parent/child
   card.appendChild(img);
   card.appendChild(cardInfo);
   cardInfo.appendChild(name);
@@ -128,27 +124,26 @@ function createUserCard (user) {
   return card;
 }
 
-// create followers array with github account handles to get their user data 
+// create followers array with github account handles to get their user data
 const followersArray = [
-  'tetondan',
-  'thetaylorjacobs',
-  'justsml',
-  'dustinmyers',
-  'bigknell',
-  'marguelgtz'
+  "tetondan",
+  "thetaylorjacobs",
+  "justsml",
+  "dustinmyers",
+  "bigknell",
+  "marguelgtz"
 ];
 
 //  Using that array, iterate over it, requesting data for each user, creating a new card for each user, and adding that card to the DOM.
 i = 0;
 followersArray.forEach(function(user, i) {
-  axios.get(`https://api.github.com/users/${followersArray[i]}`)
-    .then (data => {
-      const userData = data.data;
-      //console.log('userData', userData);
-      const cards = document.querySelector('.cards');
-      const cardInfo = createUserCard (userData);
-      //console.log(cardInfo);
-      cards.appendChild(cardInfo);
-    }), i++;
-})
-
+  axios.get(`https://api.github.com/users/${followersArray[i]}`).then(data => {
+    const userData = data.data;
+    //console.log('userData', userData);
+    const cards = document.querySelector(".cards");
+    const cardInfo = createUserCard(userData);
+    //console.log(cardInfo);
+    cards.appendChild(cardInfo);
+  }),
+    i++;
+});
