@@ -62,13 +62,13 @@ axios.get('https://api.github.com/users/reesekunz')
 
 .then (data => { 
 // Handles Success: here's where we get the results from server
-console.log(data)
+//console.log(data)
 const userData = data.data 
 // select the main dom node to attach our dynamic content
 const cards = document.querySelector('.cards')
 // creating a set of components
 const cardInfo= createUserCard(userData)
-console.log(cardInfo);
+//console.log(cardInfo);
 // adding them to the DOM
 cards.appendChild(cardInfo);  })
 
@@ -128,14 +128,27 @@ function createUserCard (user) {
   return card;
 }
 
-
+// create followers array with github account handles to get their user data 
 const followersArray = [
   'tetondan',
   'thetaylorjacobs',
   'justsml',
   'dustinmyers',
-  'bigknell'
-  'reesekunz'
+  'bigknell',
   'marguelgtz'
 ];
+
+//  Using that array, iterate over it, requesting data for each user, creating a new card for each user, and adding that card to the DOM.
+i = 0;
+followersArray.forEach(function(user, i) {
+  axios.get(`https://api.github.com/users/${followersArray[i]}`)
+    .then (data => {
+      const userData = data.data;
+      //console.log('userData', userData);
+      const cards = document.querySelector('.cards');
+      const cardInfo = createUserCard (userData);
+      //console.log(cardInfo);
+      cards.appendChild(cardInfo);
+    }), i++;
+})
 
