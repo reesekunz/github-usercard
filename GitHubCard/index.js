@@ -3,7 +3,6 @@
            https://api.github.com/users/<your name>
 */
 
-axios.get('https://api.github.com/users/reesekunz)
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -48,6 +47,7 @@ const followersArray = [];
 
 */
 
+
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
@@ -55,4 +55,53 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+// Start of Project 
+
+// STEP 1: send GET request using axios 
+
+axios.get('https://api.github.com/users/reesekunz)
+
+.then(function (response) {
+console.log(response)
+}
+)
+
+.catch(function (error) {
+  console.log(error)
+  }
+  )
+
+  .finally(function () {
+  }
+  );
+
+// STEP 4: Pass the data received from Github into your function, create a new component and add it to the DOM as a child of .cards
+// select the main dom node to attach our dynamic content
+const cards = document.querySelector('.cards')
+
+// https://api.github.com/users/reesekunz
+const users = 'reesekunz'
+
+axios.get(`https://api.github.com/users/reesekunz`)
+// Reading the value of a promise, use .then:
+.then(data => {
+// Handles Success: here's where we get the results from server
+// iterate over a list of data received from a server
+  console.log('success:', data)
+  const images = data.data.message
+  images.forEach(imageUrl => {
+  // creating a set of components
+    const element = createUserCard(imageUrl, users)
+  // adding them to the DOM
+    entry.appendChild(element)
+  })
+})
+.catch(error => {
+  // Handles failure:
+  console.log('failure:', error)
+})
+
+
+
 
