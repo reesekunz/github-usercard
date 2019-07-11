@@ -25,7 +25,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+//const followersArray = [];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -56,52 +56,74 @@ const followersArray = [];
   bigknell
 */
 
-// Start of Project 
+// send GET request using axios 
 
-// STEP 1: send GET request using axios 
+axios.get('https://api.github.com/users/reesekunz')
 
-axios.get('https://api.github.com/users/reesekunz)
-
-.then(function (response) {
-console.log(response)
-}
-)
-
-.catch(function (error) {
-  console.log(error)
-  }
-  )
-
-  .finally(function () {
-  }
-  );
-
-// STEP 4: Pass the data received from Github into your function, create a new component and add it to the DOM as a child of .cards
+.then (data => { 
+// Handles Success: here's where we get the results from server
+console.log(data)
+const userData = data.data 
 // select the main dom node to attach our dynamic content
 const cards = document.querySelector('.cards')
+// creating a set of components
+const cardInfo= createUserCard(userData)
+console.log(cardInfo);
+// adding them to the DOM
+cards.appendChild(cardInfo);  })
 
-// https://api.github.com/users/reesekunz
-const users = 'reesekunz'
-
-axios.get(`https://api.github.com/users/reesekunz`)
-// Reading the value of a promise, use .then:
-.then(data => {
-// Handles Success: here's where we get the results from server
-// iterate over a list of data received from a server
-  console.log('success:', data)
-  const images = data.data.message
-  images.forEach(imageUrl => {
-  // creating a set of components
-    const element = createUserCard(imageUrl, users)
-  // adding them to the DOM
-    entry.appendChild(element)
-  })
-})
 .catch(error => {
   // Handles failure:
-  console.log('failure:', error)
+  console.log('The gitHub API is currently down, try again later', error)
 })
 
 
 
+const cards = document.querySelector('.cards')
+// creates and returns DOM node
+function createUserCard (user) {
 
+// create the elements based off HTML 
+  const card = document.createElement('div');
+  const img = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const link = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+// set the styles based off classes 
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  userName.classList.add('user-name');
+
+  // set the content based off gitHub info 
+  img.src = user.avatar_url;
+  location.textContent = user.location;
+  name.textContent = user.name;
+  userName.textContent = user.login;
+  const gitHubLink = user.html_url;
+  link.innerHTML = gitHubLink.link(user.html_url);
+  followers.textContent = `Followers: ${user.followers}`;
+  following.textContent = `Following: ${user.following}`;
+  bio.textContent = user.bio;
+
+  // put together based off HTML parent/child 
+  card.appendChild(img);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  profile.appendChild(link);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  return card;
+}
