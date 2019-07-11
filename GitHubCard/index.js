@@ -127,3 +127,15 @@ function createUserCard (user) {
 
   return card;
 }
+
+
+const followersArray = [
+  'tetondan',
+  'thetaylorjacobs',
+  'justsml',
+  'dustinmyers',
+  'bigknell'
+  'reesekunz'
+  'marguelgtz'
+];
+
